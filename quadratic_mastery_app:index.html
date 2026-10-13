@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Formula Mastery Curriculum (Levels 1 - 7)</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent-bg: #eff6ff;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #1e293b;
+            color: white;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.1rem;
+            color: #38bdf8;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .level-list {
+            list-style: none;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .level-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .level-btn:hover {
+            background: #334155;
+            color: white;
+        }
+
+        .level-btn.active {
+            background: #0f172a;
+            color: #38bdf8;
+            border-left-color: #38bdf8;
+        }
+
+        .level-status {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: #334155;
+        }
+
+        .level-status.complete {
+            background: #059669;
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #334155;
+        }
+
+        .reset-btn {
+            width: 100%;
+            background: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .reset-btn:hover { background: #ef4444; color: white; }
+
+        /* MAIN CONTENT AREA */
+        .main-wrapper {
+            flex-grow: 1;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .app-container {
+            max-width: 950px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-bar {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tier-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .streak-counter {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        .workspace {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ANATOMY DIAGRAM PREFACE CARD */
+        .anatomy-diagram-card {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            padding: 16px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .diagram-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .diagram-formula {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .tag-lead { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; padding: 4px 8px; border-radius: 6px; }
+        .tag-disc { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 4px 8px; border-radius: 6px; }
+        .tag-den { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; padding: 4px 8px; border-radius: 6px; }
+
+        .math-card {
+            background: var(--accent-bg);
+            border: 2px solid #bfdbfe;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .math-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 8px;
+        }
+
+        .numerator {
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .denominator { display: flex; align-items: center; gap: 4px; }
+
+        .radicand-box {
+            border-top: 2px solid #1e3a8a;
+            padding-left: 4px;
+            padding-top: 1px;
+            margin-left: -2px;
+        }
+
+        .step-container {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+
+        .num-input {
+            width: 60px;
+            height: 40px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .num-input:focus { border-color: var(--primary); background: #ffffff; }
+        .num-input.correct { border-color: var(--success); background: #d1fae5; color: #065f46; }
+        .num-input.error { border-color: var(--error); background: #fee2e2; color: #991b1b; animation: shake 0.3s; }
+
+        /* TOKEN BANK STYLES (CLICK & PLACE) */
+        .token-bank {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .token-btn {
+            background: #ffffff;
+            border: 2px solid #2563eb;
+            color: #1e40af;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .token-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .token-btn.selected {
+            background: #1e40af;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        .target-slot {
+            min-width: 90px;
+            min-height: 38px;
+            border: 2px dashed #94a3b8;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .target-slot.filled {
+            border-style: solid;
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .target-slot.correct { border-color: var(--success); background: #d1fae5; color: #065f46; }
+        .target-slot.error { border-color: var(--error); background: #fee2e2; color: #991b1b; animation: shake 0.3s; }
+
+        .ans-slot-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .v-frac-box {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            gap: 4px;
+        }
+
+        .v-frac-num { border-bottom: 2px solid #0f172a; padding-bottom: 4px; margin-bottom: 2px; }
+        .v-frac-den { padding-top: 2px; }
+
+        .toggle-frac-btn {
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-frac-btn:hover { background: #cbd5e1; color: var(--primary); }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .triangle-highlight {
+            border: 2px dashed #f59e0b;
+            background: #fef3c7;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        /* CALCULATOR PANEL */
+        .calc-panel {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .calc-display {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 1.2rem;
+            min-height: 50px;
+            word-break: break-all;
+        }
+
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+        .calc-btn {
+            padding: 10px;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .calc-btn:hover { background: #e2e8f0; }
+
+        .hint-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #1e40af;
+            display: none;
+        }
+
+        .btn-action {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            align-self: flex-end;
+        }
+
+        .btn-action:hover { background: var(--primary-hover); }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+    <div>
+        <div class="sidebar-header">
+            <h1>Quadratic Mastery</h1>
+            <p>Scaffolded 7-Level Curriculum</p>
+        </div>
+        <ul class="level-list">
+            <li class="level-btn" onclick="switchLevel(1)" id="nav-lvl-1">
+                <span>1. Standard Form Coefficients</span>
+                <span class="level-status" id="status-1">L1</span>
+            </li>
+            <li class="level-btn" onclick="switchLevel(2)" id="nav-lvl-2">
+                <span>2. Formula Anatomy</span>
+                <span class="level-status" id="status-2">L2</span>
+            </li>
+            <li class="level-btn" onclick="switchLevel(3)" id="nav-lvl-3">
+                <span>3. Variable Shell</span>
+                <span class="level-status" id="status-3">L3</span>
+            </li>
+            <li class="level-btn" onclick="switchLevel(4)" id="nav-lvl-4">
+                <span>4. Numerical Substitution</span>
+                <span class="level-status" id="status-4">L4</span>
+            </li>
+            <li class="level-btn" onclick="switchLevel(5)" id="nav-lvl-5">
+                <span>5. Rearrangement Setup</span>
+                <span class="level-status" id="status-5">L5</span>
+            </li>
+            <li class="level-btn" onclick="switchLevel(6)" id="nav-lvl-6">
+                <span>6. 3-Block Sub-Evaluation</span>
+                <span class="level-status" id="status-6">L6</span>
+            </li>
+            <li class="level-btn active" onclick="switchLevel(7)" id="nav-lvl-7">
+                <span>7. Radical Pipeline</span>
+                <span class="level-status" id="status-7">L7</span>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar-footer">
+        <button class="reset-btn" onclick="resetAllProgress()">Reset Saved Progress</button>
+    </div>
+</nav>
+
+<!-- MAIN APP VIEW -->
+<main class="main-wrapper">
+    <div class="app-container">
+        <div class="header-bar">
+            <div>
+                <h2 id="lvl-title">Level 2: Formula Anatomy</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;" id="lvl-desc">Master formula anatomy and symbol positions</p>
+            </div>
+            <div class="badge-container">
+                <div class="tier-badge" id="tier-badge">Level 2</div>
+                <div class="streak-counter" id="streak-display">Streak: 0 / 5</div>
+            </div>
+        </div>
+
+        <div class="layout-grid">
+            <div class="workspace">
+                <!-- LEVEL 2 ANATOMY PREFACE DIAGRAM -->
+                <div class="anatomy-diagram-card" id="anatomy-preface" style="display: none;">
+                    <span class="diagram-title">Quadratic Formula Reference Diagram</span>
+                    <div class="diagram-formula">
+                        x = 
+                        <div class="fraction">
+                            <div class="numerator">
+                                <span class="tag-lead">Lead Term: -b</span> ± 
+                                √<span class="tag-disc">Discriminant: b² - 4ac</span>
+                            </div>
+                            <div class="denominator">
+                                <span class="tag-den">Denominator: 2a</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="math-card">
+                    <span style="font-size: 0.8rem; font-weight: bold; color: #1e40af; text-transform: uppercase;" id="card-subtitle">Active Problem Expression</span>
+                    <div class="math-display" id="math-target-display"></div>
+                </div>
+
+                <!-- STEP 1 CONTAINER -->
+                <div class="step-container" id="step1-container">
+                    <div class="step-title" id="step1-title">Step 1: Formula Anatomy Task</div>
+                    <div class="input-row" id="step1-row"></div>
+                </div>
+
+                <!-- STEP 2 CONTAINER -->
+                <div class="step-container" id="step2-container" style="display: none;">
+                    <div class="step-title" id="step2-title">Step 2: Final Reduction</div>
+                    <div class="input-row" id="step2-row"></div>
+                </div>
+
+                <div class="hint-box" id="hint-box"></div>
+
+                <button class="btn-action" id="submit-btn" onclick="verifyActiveStep()">Verify Answer</button>
+            </div>
+
+            <!-- CALCULATOR -->
+            <div class="calc-panel">
+                <h4>Scientific Calculator</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Non-simplifying numeric calculator</p>
+                <div class="calc-display" id="calc-display">0</div>
+                <div class="calc-grid">
+                    <button class="calc-btn" onclick="calcInput('C')">C</button>
+                    <button class="calc-btn" onclick="calcInput('(')">(</button>
+                    <button class="calc-btn" onclick="calcInput(')')">)</button>
+                    <button class="calc-btn" onclick="calcInput('/')">÷</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn" onclick="calcInput('*')">×</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn" onclick="calcInput('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn" onclick="calcInput('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('0')">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn" onclick="calcInput('sqrt(')">√</button>
+                    <button class="calc-btn" onclick="calcInput('sq')">x²</button>
+
+                    <button class="calc-btn" onclick="calcInput('-')">+/-</button>
+                    <button class="calc-btn" style="grid-column: span 3; background: var(--success); color: white; margin-top: 4px;" onclick="calcEval()">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // PERSISTENCE ENGINE
+    let userProgress = JSON.parse(localStorage.getItem('quadraticProgress')) || {
+        completedLevels: [],
+        currentLevel: 1,
+        streaks: { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0 }
+    };
+
+    function saveProgress() {
+        localStorage.setItem('quadraticProgress', JSON.stringify(userProgress));
+        updateSidebarUI();
+    }
+
+    function updateSidebarUI() {
+        for (let i = 1; i <= 7; i++) {
+            const statusElem = document.getElementById(`status-${i}`);
+            const navElem = document.getElementById(`nav-lvl-${i}`);
+            
+            if (userProgress.completedLevels.includes(i)) {
+                statusElem.innerText = "✓";
+                statusElem.className = "level-status complete";
+            } else {
+                statusElem.innerText = `L${i}`;
+                statusElem.className = "level-status";
+            }
+
+            if (i === activeLevel) {
+                navElem.classList.add("active");
+            } else {
+                navElem.classList.remove("active");
+            }
+        }
+    }
+
+    function resetAllProgress() {
+        if (confirm("Reset all saved curriculum progress?")) {
+            userProgress = {
+                completedLevels: [],
+                currentLevel: 1,
+                streaks: { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0 }
+            };
+            saveProgress();
+            switchLevel(1);
+        }
+    }
+
+    // MATH GENERATOR ENGINE (Levels 1 - 7)
+    const Generator = {
+        randInt: function(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+        randNonZero: function(min, max) { let v = 0; while (v === 0) v = this.randInt(min, max); return v; },
+        gcd: function(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { let t = b; b = a % b; a = t; } return a || 1; },
+        gcd3: function(a, b, c) { return this.gcd(this.gcd(a, b), c); },
+
+        simplifyFraction: function(num, den) {
+            if (den === 0) return { num: 0, den: 1 };
+            let sign = (num * den < 0) ? -1 : 1;
+            let n = Math.abs(num);
+            let d = Math.abs(den);
+            let g = this.gcd(n, d);
+            return { num: (n / g) * sign, den: d / g };
+        },
+
+        generateLevel1: function() {
+            let a = this.randNonZero(-5, 5);
+            let b = this.randInt(-8, 8);
+            let c = this.randInt(-9, 9);
+
+            let eqStr = "";
+            if (a === 1) eqStr += "x²";
+            else if (a === -1) eqStr += "-x²";
+            else eqStr += `${a}x²`;
+
+            if (b !== 0) {
+                if (b === 1) eqStr += " + x";
+                else if (b === -1) eqStr += " - x";
+                else if (b > 0) eqStr += ` + ${b}x`;
+                else eqStr += ` - ${Math.abs(b)}x`;
+            }
+
+            if (c !== 0) {
+                if (c > 0) eqStr += ` + ${c}`;
+                else eqStr += ` - ${Math.abs(c)}`;
+            }
+
+            eqStr += " = 0";
+
+            return {
+                htmlOutput: eqStr,
+                s1Title: "Extract Coefficients (a, b, c)",
+                s1HTML: `a = <input type="text" class="num-input" id="ans-a"> , &nbsp; b = <input type="text" class="num-input" id="ans-b"> , &nbsp; c = <input type="text" class="num-input" id="ans-c">`,
+                answers: { "ans-a": a.toString(), "ans-b": b.toString(), "ans-c": c.toString() },
+                hint: `In ax² + bx + c = 0: a is the x² coefficient, b is the x coefficient, and c is the constant.`
+            };
+        },
+
+        generateLevel2: function() {
+            let variant = this.randInt(1, 3);
+
+            if (variant === 1) {
+                let htmlFormula = `
+                    x = <div class="fraction">
+                        <div class="numerator">
+                            <span class="target-slot" id="slot-lead" onclick="placeSelectedToken('slot-lead')">Lead Term</span> ± 
+                            √<span class="radicand-box"><span class="target-slot" id="slot-disc" onclick="placeSelectedToken('slot-disc')">Discriminant</span></span>
+                        </div>
+                        <div class="denominator">
+                            <span class="target-slot" id="slot-den" onclick="placeSelectedToken('slot-den')">Denominator</span>
+                        </div>
+                    </div>
+                `;
+                let bankHTML = `
+                    <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; width:100%;">Click an expression token, then click its matching structural slot:</p>
+                    <div class="token-bank">
+                        <button class="token-btn" onclick="selectToken(this, '-b')">-b</button>
+                        <button class="token-btn" onclick="selectToken(this, 'b²-4ac')">b²-4ac</button>
+                        <button class="token-btn" onclick="selectToken(this, '2a')">2a</button>
+                    </div>
+                `;
+                return {
+                    variant: 1,
+                    htmlOutput: htmlFormula,
+                    s1Title: "Variant A: Place Algebraic Components into Structural Slots",
+                    s1HTML: bankHTML,
+                    answers: { "slot-lead": "-b", "slot-disc": "b²-4ac", "slot-den": "2a" },
+                    hint: `Match the component expression to its structural name (Lead Term is -b, Discriminant is b²-4ac, Denominator is 2a).`
+                };
+
+            } else if (variant === 2) {
+                let htmlFormula = `
+                    x = <div class="fraction">
+                        <div class="numerator">
+                            <span style="font-family:monospace; font-weight:bold; color:#1e3a8a;">-b</span> ± 
+                            √<span class="radicand-box"><span style="font-family:monospace; font-weight:bold; color:#1e3a8a;">b²-4ac</span></span>
+                        </div>
+                        <div class="denominator">
+                            <span style="font-family:monospace; font-weight:bold; color:#1e3a8a;">2a</span>
+                        </div>
+                    </div>
+                `;
+                let formHTML = `
+                    <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; width:100%;">Identify the correct name for each formula component:</p>
+                    <div style="display:flex; flex-direction:column; gap:8px; width:100%; max-width:400px; margin:0 auto;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>-b</strong> is the:</span>
+                            <select class="num-input" id="ans-lead" style="width:160px;">
+                                <option value="?">Select...</option>
+                                <option value="Lead Term">Lead Term</option>
+                                <option value="Discriminant">Discriminant</option>
+                                <option value="Denominator">Denominator</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>b²-4ac</strong> is the:</span>
+                            <select class="num-input" id="ans-disc" style="width:160px;">
+                                <option value="?">Select...</option>
+                                <option value="Lead Term">Lead Term</option>
+                                <option value="Discriminant">Discriminant</option>
+                                <option value="Denominator">Denominator</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>2a</strong> is the:</span>
+                            <select class="num-input" id="ans-den" style="width:160px;">
+                                <option value="?">Select...</option>
+                                <option value="Lead Term">Lead Term</option>
+                                <option value="Discriminant">Discriminant</option>
+                                <option value="Denominator">Denominator</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                return {
+                    variant: 2,
+                    htmlOutput: htmlFormula,
+                    s1Title: "Variant B: Identify Component Names",
+                    s1HTML: formHTML,
+                    answers: { "ans-lead": "Lead Term", "ans-disc": "Discriminant", "ans-den": "Denominator" },
+                    hint: `-b is the Lead Term, b²-4ac is the Discriminant, and 2a is the Denominator.`
+                };
+
+            } else {
+                let formHTML = `
+                    <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; width:100%;">Select the correct algebraic expression for each term name:</p>
+                    <div style="display:flex; flex-direction:column; gap:8px; width:100%; max-width:400px; margin:0 auto;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>Lead Term:</strong></span>
+                            <select class="num-input" id="ans-lead" style="width:140px;">
+                                <option value="?">Select...</option>
+                                <option value="-b">-b</option>
+                                <option value="b²-4ac">b²-4ac</option>
+                                <option value="2a">2a</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>Discriminant:</strong></span>
+                            <select class="num-input" id="ans-disc" style="width:140px;">
+                                <option value="?">Select...</option>
+                                <option value="-b">-b</option>
+                                <option value="b²-4ac">b²-4ac</option>
+                                <option value="2a">2a</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span><strong>Denominator:</strong></span>
+                            <select class="num-input" id="ans-den" style="width:140px;">
+                                <option value="?">Select...</option>
+                                <option value="-b">-b</option>
+                                <option value="b²-4ac">b²-4ac</option>
+                                <option value="2a">2a</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                return {
+                    variant: 3,
+                    htmlOutput: `<div style="font-size:1.1rem; font-weight:bold; color:var(--primary); text-align:center;">Formula Anatomy Concept Match</div>`,
+                    s1Title: "Variant C: Match Component Expressions to Names",
+                    s1HTML: formHTML,
+                    answers: { "ans-lead": "-b", "ans-disc": "b²-4ac", "ans-den": "2a" },
+                    hint: `Lead Term is -b, Discriminant is b²-4ac, Denominator is 2a.`
+                };
+            }
+        },
+
+        generateLevel3: function() {
+            let a = this.randNonZero(-4, 4);
+            let b = this.randInt(-6, 6);
+            let c = this.randInt(-7, 7);
+
+            return {
+                htmlOutput: `Given: a = ${a}, b = ${b}, c = ${c}`,
+                s1Title: "Substitute into Parenthesized Formula Shell",
+                s1HTML: `x = <div class="fraction"><div class="numerator">-( <input type="text" class="num-input" id="ans-b1"> ) ± √<span class="radicand-box">( <input type="text" class="num-input" id="ans-b2"> )² - 4( <input type="text" class="num-input" id="ans-a1"> )( <input type="text" class="num-input" id="ans-c1"> )</span></div><div class="denominator">2( <input type="text" class="num-input" id="ans-a2"> )</div></div>`,
+                answers: {
+                    "ans-b1": b.toString(),
+                    "ans-b2": b.toString(),
+                    "ans-a1": a.toString(),
+                    "ans-c1": c.toString(),
+                    "ans-a2": a.toString()
+                },
+                hint: `Substitute b into both -(b) and (b)², a into 4(a) and 2(a), and c into 4(a)(c).`
+            };
+        },
+
+        generateLevel4: function() {
+            let a = this.randNonZero(-4, 4);
+            let b = -Math.abs(this.randInt(2, 7));
+            let c = this.randInt(-7, 7);
+
+            return {
+                htmlOutput: `Given Equation: ${a}x² ${b}x ${c >= 0 ? '+ ' + c : '- ' + Math.abs(c)} = 0`,
+                s1Title: "Substitute Negative Coefficients Correctly",
+                s1HTML: `x = <div class="fraction"><div class="numerator">-( <input type="text" class="num-input" id="ans-b1"> ) ± √<span class="radicand-box">( <input type="text" class="num-input" id="ans-b2"> )² - 4( <input type="text" class="num-input" id="ans-a1"> )( <input type="text" class="num-input" id="ans-c1"> )</span></div><div class="denominator">2( <input type="text" class="num-input" id="ans-a2"> )</div></div>`,
+                answers: {
+                    "ans-b1": b.toString(),
+                    "ans-b2": b.toString(),
+                    "ans-a1": a.toString(),
+                    "ans-c1": c.toString(),
+                    "ans-a2": a.toString()
+                },
+                hint: `Double-negative trap! Since b = ${b}, enter ${b} inside -(b) so it becomes -(${b}) = ${-b}.`
+            };
+        },
+
+        generateLevel5: function() {
+            let a = this.randNonZero(-4, 4);
+            let b = this.randInt(-7, 7);
+            let c = this.randInt(-8, 8);
+
+            let unarranged = `${a}x² = ${-b}x ${-c >= 0 ? '+ ' + (-c) : '- ' + Math.abs(-c)}`;
+
+            return {
+                htmlOutput: `Un-arranged Equation: ${unarranged}`,
+                s1Title: "Rearrange to Standard Form (ax² + bx + c = 0) and Extract a, b, c",
+                s1HTML: `a = <input type="text" class="num-input" id="ans-a"> , &nbsp; b = <input type="text" class="num-input" id="ans-b"> , &nbsp; c = <input type="text" class="num-input" id="ans-c">`,
+                answers: { "ans-a": a.toString(), "ans-b": b.toString(), "ans-c": c.toString() },
+                hint: `Move terms across the equals sign to reverse their signs: ${unarranged} ⟹ ${a}x² + ${b}x + ${c} = 0.`
+            };
+        },
+
+        generateLevel6: function() {
+            let a = this.randNonZero(-3, 3);
+            let b = this.randInt(-6, 6);
+            let c = this.randInt(-6, 6);
+
+            let lead = -b;
+            let disc = (b * b) - (4 * a * c);
+            let den = 2 * a;
+
+            return {
+                htmlOutput: `x = <div class="fraction"><div class="numerator">-( ${b} ) ± √<span class="radicand-box">( ${b} )² - 4( ${a} )( ${c} )</span></div><div class="denominator">2( ${a} )</div></div>`,
+                s1Title: "Evaluate the 3 Blocks",
+                s1HTML: `Lead (-b): <input type="text" class="num-input" id="ans-b1"> &nbsp;|&nbsp; 
+                         Discriminant (b²-4ac): <input type="text" class="num-input" id="ans-b2"> &nbsp;|&nbsp; 
+                         Denominator (2a): <input type="text" class="num-input" id="ans-b3">`,
+                answers: { "ans-b1": lead.toString(), "ans-b2": disc.toString(), "ans-b3": den.toString() },
+                hint: `Block 1: -(${b}) = ${lead}. Block 2: (${b})² - 4(${a})(${c}) = ${disc}. Block 3: 2(${a}) = ${den}.`
+            };
+        },
+
+        generateLevel7: function(subTier, probNum) {
+            let titleMap = {
+                1: "Sub-Tier 7.1: Perfect Square",
+                2: "Sub-Tier 7.2: Irreducible Radical",
+                3: "Sub-Tier 7.3: Radical Decomposition",
+                4: "Sub-Tier 7.4: Triangle Rule Reduction",
+                5: "Sub-Tier 7.5: Complex Roots"
+            };
+
+            let stageObj = {
+                tier: titleMap[subTier],
+                problemNum: `${probNum} / 3`,
+                subTierType: subTier
+            };
+
+            if (subTier === 1) {
+                const perfects = [0, 1, 4, 9, 16, 25, 36, 49, 64];
+                let root = Math.sqrt(perfects[this.randInt(0, perfects.length - 1)]);
+                let a = this.randNonZero(1, 3);
+                let lead = this.randInt(-6, 6);
+                let den = 2 * a;
+                let disc = root * root;
+
+                let x1Frac = this.simplifyFraction(lead + root, den);
+                let x2Frac = this.simplifyFraction(lead - root, den);
+
+                stageObj.htmlOutput = `x = <div class="fraction"><div class="numerator">${lead} ± √<span class="radicand-box">${disc}</span></div><div class="denominator">${den}</div></div>`;
+                stageObj.s1Title = "Step 1: Simplify Square Root";
+                stageObj.s1HTML = `x = <div class="fraction"><div class="numerator">${lead} ± <input type="text" class="num-input" id="sq-val"></div><div class="denominator">${den}</div></div>`;
+                stageObj.s1Ans = { "sq-val": { type: "single", val: root.toString() } };
+
+                if (disc === 0) {
+                    stageObj.s2Title = "Step 2: Simplify Single Repeated Solution";
+                    stageObj.s2HTML = `x = ${renderSlot('x1')}`;
+                    stageObj.s2Ans = { "x1": { num: x1Frac.num.toString(), den: x1Frac.den.toString() } };
+                } else {
+                    stageObj.s2Title = "Step 2: Split ± into Two Simplified Solutions";
+                    stageObj.s2HTML = `x₁ = ${renderSlot('x1')} , &nbsp; x₂ = ${renderSlot('x2')}`;
+                    stageObj.s2Ans = {
+                        "x1": { num: x1Frac.num.toString(), den: x1Frac.den.toString() },
+                        "x2": { num: x2Frac.num.toString(), den: x2Frac.den.toString() }
+                    };
+                }
+
+                stageObj.hint1 = `Evaluate √${disc}. What integer squared equals ${disc}?`;
+                stageObj.hint2 = `Compute (${lead} + ${root}) / ${den} and (${lead} - ${root}) / ${den} as simplified fractions.`;
+
+            } else if (subTier === 2) {
+                const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31];
+                let disc = primes[this.randInt(0, primes.length - 1)];
+                let lead = this.randNonZero(-7, 7);
+                let den = 2 * this.randNonZero(1, 3);
+
+                stageObj.htmlOutput = `x = <div class="fraction"><div class="numerator">${lead} ± √<span class="radicand-box">${disc}</span></div><div class="denominator">${den}</div></div>`;
+                stageObj.s1Title = "Step 1: Radical Simplification Check";
+                stageObj.s1HTML = `Can √${disc} be factored into a perfect square? 
+                                   <select class="num-input" id="irr-check" style="width: 80px;"><option value="?">?</option><option value="yes">Yes</option><option value="no">No</option></select>`;
+                stageObj.s1Ans = { "irr-check": { type: "single", val: "no" } };
+                stageObj.s2Title = "Step 2: Final Conjugate Form";
+                stageObj.s2HTML = `Expression is already fully simplified: &nbsp; x = <div class="fraction"><div class="numerator">${lead} ± √<span class="radicand-box">${disc}</span></div><div class="denominator">${den}</div></div>`;
+                stageObj.s2Ans = {};
+
+                stageObj.hint1 = `${disc} has no perfect square factors greater than 1.`;
+                stageObj.hint2 = `No common factors divide ${lead}, 1, and ${den}. The answer is fully reduced.`;
+
+            } else if (subTier === 3) {
+                const squareFactors = [4, 9, 16, 25, 36];
+                const primes = [2, 3, 5, 6, 7];
+                let sq = squareFactors[this.randInt(0, squareFactors.length - 1)];
+                let m = primes[this.randInt(0, primes.length - 1)];
+                let disc = sq * m;
+                let k = Math.sqrt(sq);
+                let lead = this.randNonZero(-7, 7);
+                let den = 2 * this.randNonZero(1, 3);
+
+                stageObj.htmlOutput = `x = <div class="fraction"><div class="numerator">${lead} ± √<span class="radicand-box">${disc}</span></div><div class="denominator">${den}</div></div>`;
+                stageObj.s1Title = "Step 1: Factor Largest Perfect Square";
+                stageObj.s1HTML = `√${disc} = √( <input type="text" class="num-input" id="sq-fac"> × ${m} ) = <input type="text" class="num-input" id="ext-fac">√${m}`;
+                stageObj.s1Ans = {
+                    "sq-fac": { type: "single", val: sq.toString() },
+                    "ext-fac": { type: "single", val: k.toString() }
+                };
+
+                stageObj.s2Title = "Step 2: Re-insert Extracted Radical";
+                stageObj.s2HTML = `x = <div class="fraction"><div class="numerator">${lead} ± <input type="text" class="num-input" id="extracted-coeff">√${m}</div><div class="denominator">${den}</div></div>`;
+                stageObj.s2Ans = { "extracted-coeff": { type: "single", val: k.toString() } };
+
+                stageObj.hint1 = `Find the largest perfect square factor of ${disc} (Hint: ${sq} × ${m} = ${disc}).`;
+                stageObj.hint2 = `Since √${sq} = ${k}, √${disc} simplifies to ${k}√${m}.`;
+
+            } else if (subTier === 4) {
+                let g = this.randInt(2, 4);
+                let p = this.randNonZero(1, 4) * g;
+                let q = this.randNonZero(1, 3) * g;
+                let s = this.randNonZero(1, 3) * g;
+                let m = [2, 3, 5, 7][this.randInt(0, 3)];
+
+                let actualGcd = this.gcd3(p, q, s);
+
+                stageObj.htmlOutput = `x = <div class="fraction"><div class="numerator"><span class="triangle-highlight">${p}</span> ± <span class="triangle-highlight">${q}</span>√${m}</div><div class="denominator"><span class="triangle-highlight">${s}</span></div></div>`;
+                stageObj.s1Title = `Step 1: Identify Greatest Common Divisor of Outer Terms (${p}, ${q}, ${s})`;
+                stageObj.s1HTML = `GCD(${p}, ${q}, ${s}) = <input type="text" class="num-input" id="gcd-val">`;
+                stageObj.s1Ans = { "gcd-val": { type: "single", val: actualGcd.toString() } };
+
+                stageObj.s2Title = "Step 2: Divide All Three Terms by Common Factor";
+                stageObj.s2HTML = `x = <div class="fraction"><div class="numerator"><input type="text" class="num-input" id="t1"> ± <input type="text" class="num-input" id="t2">√${m}</div><div class="denominator"><input type="text" class="num-input" id="t3"></div></div>`;
+                stageObj.s2Ans = {
+                    "t1": { type: "single", val: (p / actualGcd).toString() },
+                    "t2": { type: "single", val: (q / actualGcd).toString() },
+                    "t3": { type: "single", val: (s / actualGcd).toString() }
+                };
+
+                stageObj.hint1 = `Find the largest integer that divides ${p}, ${q}, and ${s} evenly.`;
+                stageObj.hint2 = `Divide all three terms by ${actualGcd}: (${p}÷${actualGcd} ± ${q}÷${actualGcd}√${m}) / (${s}÷${actualGcd}).`;
+
+            } else if (subTier === 5) {
+                const squareFactors = [4, 9, 16, 25];
+                const primes = [2, 3, 5, 6];
+                let sq = squareFactors[this.randInt(0, squareFactors.length - 1)];
+                let m = primes[this.randInt(0, primes.length - 1)];
+                let absDisc = sq * m;
+                let k = Math.sqrt(sq);
+
+                let g = this.randInt(2, 3);
+                let p = this.randNonZero(1, 3) * g;
+                let q = k * this.randNonZero(1, 2) * g; 
+                let s = 2 * this.randNonZero(1, 2) * g;
+                let actualGcd = this.gcd3(p, q, s);
+
+                stageObj.htmlOutput = `x = <div class="fraction"><div class="numerator">${p} ± √<span class="radicand-box">-${absDisc}</span></div><div class="denominator">${s}</div></div>`;
+                stageObj.s1Title = "Step 1: Extract Imaginary Unit (i = √-1)";
+                stageObj.s1HTML = `√-${absDisc} = i√${absDisc} = i√( ${sq} × ${m} ) = <input type="text" class="num-input" id="img-coeff"> i √${m}`;
+                stageObj.s1Ans = { "img-coeff": { type: "single", val: q.toString() } };
+
+                stageObj.s2Title = `Step 2: Apply Triangle Reduction to (${p} ± ${q}i√${m}) / ${s}`;
+                stageObj.s2HTML = `x = <div class="fraction"><div class="numerator"><input type="text" class="num-input" id="c1"> ± <input type="text" class="num-input" id="c2"> i √${m}</div><div class="denominator"><input type="text" class="num-input" id="c3"></div></div>`;
+                stageObj.s2Ans = {
+                    "c1": { type: "single", val: (p / actualGcd).toString() },
+                    "c2": { type: "single", val: (q / actualGcd).toString() },
+                    "c3": { type: "single", val: (s / actualGcd).toString() }
+                };
+
+                stageObj.hint1 = `Extract i for negative sign, then simplify √${absDisc} = ${q}√${m}, yielding ${q}i√${m}.`;
+                stageObj.hint2 = `Divide outer terms (${p}, ${q}, and ${s}) by ${actualGcd} to get fully reduced terms.`;
+            }
+
+            return stageObj;
+        }
+    };
+
+    // APPLICATION CONTROLLER
+    let activeLevel = userProgress.currentLevel || 1;
+    let currentSubTier = 1;
+    let currentProblemNum = 1;
+    let currentStep = 1;
+    let activeProblemData = null;
+
+    let selectedTokenText = null;
+
+    function selectToken(btnElem, tokenVal) {
+        document.querySelectorAll('.token-btn').forEach(b => b.classList.remove('selected'));
+        btnElem.classList.add('selected');
+        selectedTokenText = tokenVal;
+    }
+
+    function placeSelectedToken(slotId) {
+        if (!selectedTokenText) {
+            alert("Click an expression token below first!");
+            return;
+        }
+        const slot = document.getElementById(slotId);
+        slot.innerText = selectedTokenText;
+        slot.classList.add('filled');
+        slot.setAttribute('data-val', selectedTokenText);
+    }
+
+    function renderSlot(id) {
+        return `
+            <div class="ans-slot-container" id="slot-wrap-${id}">
+                <input type="text" class="num-input" id="${id}-single" placeholder="?">
+                <button type="button" class="toggle-frac-btn" onclick="toggleFractionSlot('${id}')">a/b</button>
+            </div>
+        `;
+    }
+
+    function toggleFractionSlot(id) {
+        const wrap = document.getElementById(`slot-wrap-${id}`);
+        const isFrac = wrap.classList.contains("is-fraction");
+
+        if (isFrac) {
+            wrap.classList.remove("is-fraction");
+            wrap.innerHTML = `
+                <input type="text" class="num-input" id="${id}-single" placeholder="?">
+                <button type="button" class="toggle-frac-btn" onclick="toggleFractionSlot('${id}')">a/b</button>
+            `;
+        } else {
+            wrap.classList.add("is-fraction");
+            wrap.innerHTML = `
+                <div class="v-frac-box">
+                    <div class="v-frac-num"><input type="text" class="num-input" id="${id}-num" placeholder="num"></div>
+                    <div class="v-frac-den"><input type="text" class="num-input" id="${id}-den" placeholder="den"></div>
+                </div>
+                <button type="button" class="toggle-frac-btn" onclick="toggleFractionSlot('${id}')">123</button>
+            `;
+        }
+    }
+
+    function switchLevel(lvl) {
+        activeLevel = lvl;
+        userProgress.currentLevel = lvl;
+        saveProgress();
+
+        const levelTitles = {
+            1: "Level 1: Standard Form Coefficients",
+            2: "Level 2: Formula Anatomy",
+            3: "Level 3: Variable Substitution Shell",
+            4: "Level 4: Signed Substitution & Negation Traps",
+            5: "Level 5: Standard Form Conversion & Setup",
+            6: "Level 6: Evaluate the 3 Sub-expression Blocks",
+            7: "Level 7: Radical Hierarchy & Solution Pipeline"
+        };
+
+        const levelDescs = {
+            1: "Identify signed values for a, b, and c in ax² + bx + c = 0",
+            2: "Master formula anatomy and symbol positions",
+            3: "Substitute values into parenthesized formula shell",
+            4: "Handle double negatives and negative lead coefficients",
+            5: "Rearrange equations into standard form and extract a, b, c",
+            6: "Simplify Lead (-b), Discriminant (b² - 4ac), and Denominator (2a)",
+            7: "Complete solution reduction across perfect, irrational, and complex radicals"
+        };
+
+        document.getElementById("lvl-title").innerText = levelTitles[lvl];
+        document.getElementById("lvl-desc").innerText = levelDescs[lvl];
+
+        document.getElementById("anatomy-preface").style.display = (lvl === 2) ? "flex" : "none";
+
+        loadActiveProblem();
+    }
+
+    function loadActiveProblem() {
+        document.getElementById("hint-box").style.display = "none";
+        document.getElementById("step2-container").style.display = "none";
+        document.getElementById("step1-container").style.display = "flex";
+        document.getElementById("submit-btn").innerText = "Verify Answer";
+
+        let streak = userProgress.streaks[activeLevel] || 0;
+
+        if (activeLevel === 1) {
+            activeProblemData = Generator.generateLevel1();
+            document.getElementById("tier-badge").innerText = "Level 1";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 2) {
+            activeProblemData = Generator.generateLevel2();
+            selectedTokenText = null;
+            document.getElementById("tier-badge").innerText = "Level 2 (Variant " + activeProblemData.variant + ")";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 3) {
+            activeProblemData = Generator.generateLevel3();
+            document.getElementById("tier-badge").innerText = "Level 3";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 4) {
+            activeProblemData = Generator.generateLevel4();
+            document.getElementById("tier-badge").innerText = "Level 4";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 5) {
+            activeProblemData = Generator.generateLevel5();
+            document.getElementById("tier-badge").innerText = "Level 5";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 6) {
+            activeProblemData = Generator.generateLevel6();
+            document.getElementById("tier-badge").innerText = "Level 6";
+            document.getElementById("streak-display").innerText = `Streak: ${streak} / 5`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+        } else if (activeLevel === 7) {
+            activeProblemData = Generator.generateLevel7(currentSubTier, currentProblemNum);
+            document.getElementById("tier-badge").innerText = activeProblemData.tier;
+            document.getElementById("streak-display").innerText = `Problem ${activeProblemData.problemNum}`;
+            document.getElementById("math-target-display").innerHTML = activeProblemData.htmlOutput;
+
+            currentStep = 1;
+            document.getElementById("step1-title").innerText = activeProblemData.s1Title;
+            document.getElementById("step1-row").innerHTML = activeProblemData.s1HTML;
+
+            document.getElementById("step2-title").innerText = activeProblemData.s2Title;
+            document.getElementById("step2-row").innerHTML = activeProblemData.s2HTML;
+
+            document.getElementById("submit-btn").innerText = "Verify Step 1";
+        }
+    }
+
+    function verifyActiveStep() {
+        if (activeLevel === 7) {
+            verifyLevel7Step();
+            return;
+        }
+
+        const ansMap = activeProblemData.answers;
+        let allCorrect = true;
+
+        if (activeLevel === 2 && activeProblemData.variant === 1) {
+            for (let id in ansMap) {
+                const elem = document.getElementById(id);
+                if (!elem) continue;
+                const placedVal = elem.getAttribute('data-val') || "";
+                if (placedVal === ansMap[id]) {
+                    elem.className = "target-slot filled correct";
+                } else {
+                    elem.className = "target-slot filled error";
+                    allCorrect = false;
+                }
+            }
+        } else {
+            for (let id in ansMap) {
+                const elem = document.getElementById(id);
+                if (!elem) continue;
+                const val = elem.value.trim();
+                if (val.toLowerCase() === ansMap[id].toLowerCase()) {
+                    elem.className = "num-input correct";
+                } else {
+                    elem.className = "num-input error";
+                    allCorrect = false;
+                }
+            }
+        }
+
+        if (allCorrect) {
+            document.getElementById("hint-box").style.display = "none";
+            userProgress.streaks[activeLevel] = (userProgress.streaks[activeLevel] || 0) + 1;
+
+            if (userProgress.streaks[activeLevel] >= 5) {
+                if (!userProgress.completedLevels.includes(activeLevel)) {
+                    userProgress.completedLevels.push(activeLevel);
+                }
+                saveProgress();
+                alert(`Mastery Achieved! You completed Level ${activeLevel}!`);
+            } else {
+                saveProgress();
+            }
+
+            setTimeout(() => {
+                loadActiveProblem();
+            }, 800);
+        } else {
+            userProgress.streaks[activeLevel] = 0;
+            saveProgress();
+            showHint(activeProblemData.hint);
+        }
+    }
+
+    function verifyLevel7Step() {
+        const targetAnsMap = (currentStep === 1) ? activeProblemData.s1Ans : activeProblemData.s2Ans;
+        let allCorrect = true;
+
+        for (let key in targetAnsMap) {
+            const target = targetAnsMap[key];
+            const wrap = document.getElementById(`slot-wrap-${key}`);
+
+            if (!wrap) {
+                const singleElem = document.getElementById(key);
+                if (singleElem) {
+                    const val = singleElem.value.trim().toLowerCase();
+                    if (val === target.val.toLowerCase()) {
+                        singleElem.className = "num-input correct";
+                    } else {
+                        singleElem.className = "num-input error";
+                        allCorrect = false;
+                    }
+                }
+                continue;
+            }
+
+            const isFrac = wrap.classList.contains("is-fraction");
+            
+            if (isFrac) {
+                const numElem = document.getElementById(`${key}-num`);
+                const denElem = document.getElementById(`${key}-den`);
+                const numVal = numElem ? numElem.value.trim() : "";
+                const denVal = denElem ? denElem.value.trim() : "";
+
+                let numOk = (numVal === target.num);
+                let denOk = (denVal === target.den);
+
+                if (numElem) numElem.className = "num-input " + (numOk ? "correct" : "error");
+                if (denElem) denElem.className = "num-input " + (denOk ? "correct" : "error");
+
+                if (!numOk || !denOk) allCorrect = false;
+
+            } else {
+                const singleElem = document.getElementById(`${key}-single`);
+                const singleVal = singleElem ? singleElem.value.trim() : "";
+
+                if (target.den === "1" && singleVal === target.num) {
+                    if (singleElem) singleElem.className = "num-input correct";
+                } else {
+                    if (singleElem) singleElem.className = "num-input error";
+                    allCorrect = false;
+                }
+            }
+        }
+
+        if (allCorrect) {
+            document.getElementById("hint-box").style.display = "none";
+            
+            if (currentStep === 1) {
+                if (activeProblemData.subTierType === 2) {
+                    advanceLevel7Problem();
+                } else {
+                    currentStep = 2;
+                    document.getElementById("step2-container").style.display = "flex";
+                    document.getElementById("submit-btn").innerText = "Verify Final Answer";
+                }
+            } else {
+                advanceLevel7Problem();
+            }
+        } else {
+            showHint(currentStep === 1 ? activeProblemData.hint1 : activeProblemData.hint2);
+        }
+    }
+
+    function advanceLevel7Problem() {
+        setTimeout(() => {
+            currentProblemNum++;
+            if (currentProblemNum > 3) {
+                currentProblemNum = 1;
+                currentSubTier++;
+                if (currentSubTier > 5) {
+                    if (!userProgress.completedLevels.includes(7)) {
+                        userProgress.completedLevels.push(7);
+                    }
+                    saveProgress();
+                    alert("Mastery Achieved! You completed all 5 sub-tiers in Level 7!");
+                    currentSubTier = 1;
+                }
+            }
+            loadActiveProblem();
+        }, 800);
+    }
+
+    function showHint(msg) {
+        const hintBox = document.getElementById("hint-box");
+        hintBox.innerText = `Diagnostic Hint: ${msg}`;
+        hintBox.style.display = "block";
+    }
+
+    // CALCULATOR ENGINE
+    let calcExpr = "";
+    function calcInput(val) {
+        if (val === 'C') {
+            calcExpr = "";
+        } else if (val === 'sq') {
+            calcExpr += '²';
+        } else {
+            calcExpr += val;
+        }
+        document.getElementById("calc-display").innerText = calcExpr || "0";
+    }
+
+    function calcEval() {
+        try {
+            let sanitized = calcExpr
+                .replace(/sqrt\(/g, "Math.sqrt(")
+                .replace(/²/g, "**2");
+            let res = eval(sanitized);
+            document.getElementById("calc-display").innerText = Number(res.toFixed(5));
+            calcExpr = res.toString();
+        } catch (e) {
+            document.getElementById("calc-display").innerText = "Error";
+            calcExpr = "";
+        }
+    }
+
+    // INITIALIZATION
+    updateSidebarUI();
+    switchLevel(activeLevel);
+</script>
+</body>
+</html>
